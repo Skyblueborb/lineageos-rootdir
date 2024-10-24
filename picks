@@ -48,6 +48,15 @@ function rc() {
 # frameworks/base
 # repopick -f 357988 # Set DEFAULT_ADB_ALLOWED_CONNECTION_TIME to 0
 
+# device/lineage/sepolicy
+repopickchain 406324 # qcom: Allow hal_usb_qti write access for sysfs_usb_data_enabled
+
+# device/qcom/sepolicy_vndr/legacy-um
+repopickchain 406611 # sepolicy: Label usb_data_enabled nodes
+
+# device/samsung/gts4lv-common
+repopickchain 406323 # gts4lv-common: Allow QTI USB HAL write access for usb_control/disable
+
 # device/xiaomi/msm8996-common
 repopickchain 404335 # msm8996-common: Shim widevine with libcrypto_shim
 
