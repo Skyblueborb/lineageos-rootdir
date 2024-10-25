@@ -55,7 +55,7 @@ repopickchain 406324 # qcom: Allow hal_usb_qti write access for sysfs_usb_data_e
 repopickchain 406812 # sm8150-common: sepolicy: Remove duplicate usb_data_enabled label
 
 # device/qcom/sepolicy_vndr/legacy-um
-repopickchain 406611 # sepolicy: Label usb_data_enabled nodes
+repopickchain 406611 # sepolicy: Allow USB HAL to rw usb_data_enabled nodes
 
 # device/samsung/gts4lv-common
 repopickchain 406323 # gts4lv-common: Allow QTI USB HAL write access for usb_control/disable
