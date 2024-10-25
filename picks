@@ -51,6 +51,9 @@ function rc() {
 # device/lineage/sepolicy
 repopickchain 406324 # qcom: Allow hal_usb_qti write access for sysfs_usb_data_enabled
 
+# device/oneplus/sm8150-common
+repopickchain 406812 # sm8150-common: sepolicy: Remove duplicate usb_data_enabled label
+
 # device/qcom/sepolicy_vndr/legacy-um
 repopickchain 406611 # sepolicy: Label usb_data_enabled nodes
 
