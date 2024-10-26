@@ -48,6 +48,9 @@ function rc() {
 # frameworks/base
 # repopick -f 357988 # Set DEFAULT_ADB_ALLOWED_CONNECTION_TIME to 0
 
+# device/oneplus/sdm845-common
+repopickchain 406836 # sdm845-common: sepolicy: Remove duplicate usb_data_enabled label
+
 # device/oneplus/sm8150-common
 repopickchain 406812 # sm8150-common: sepolicy: Remove duplicate usb_data_enabled label
 
