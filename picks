@@ -57,9 +57,6 @@ repopickchain 405071 # netd: Require 4.19+ for programs using connect/recvmsg/se
 # vendor/crowdin
 repopickchain 404380 # rm -rf
 
-# vendor/qcom/opensource/commonsys/fm
-repopickchain 403061 # FM2: Slight design adjustments
-
 # vendor/qcom/opensource/usb
 repopickchain 406613 # usb: Set permissions for common USB toggle paths
 
