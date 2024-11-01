@@ -36,9 +36,9 @@
   <project name="TheMuppets/proprietary_vendor_sony_kirin" path="vendor/sony/kirin" />
   <project name="TheMuppets/proprietary_vendor_sony_mermaid" path="vendor/sony/mermaid" />
 
-  <project name="TheMuppets/proprietary_vendor_xiaomi_msm8996-common" path="vendor/xiaomi/msm8996-common" revision="lineage-21" />
-  <project name="TheMuppets/proprietary_vendor_xiaomi_gemini" path="vendor/xiaomi/gemini" revision="lineage-21" />
-  <project name="TheMuppets/proprietary_vendor_xiaomi_natrium" path="vendor/xiaomi/natrium" revision="lineage-21" />
+  <project name="TheMuppets/proprietary_vendor_xiaomi_msm8996-common" path="vendor/xiaomi/msm8996-common" />
+  <project name="TheMuppets/proprietary_vendor_xiaomi_gemini" path="vendor/xiaomi/gemini" />
+  <project name="TheMuppets/proprietary_vendor_xiaomi_natrium" path="vendor/xiaomi/natrium" />
 
   <project name="LineageOS/android_device_google_gs-common" path="device/google/gs-common" />
   <project name="LineageOS/android_device_google_gs101" path="device/google/gs101" />
@@ -89,10 +89,10 @@
   <project name="LineageOS/android_device_sony_mermaid" path="device/sony/mermaid" />
   <project name="LineageOS/android_kernel_sony_sdm660" path="kernel/sony/sdm660" />
 
-  <project name="LineageOS/android_device_xiaomi_msm8996-common" path="device/xiaomi/msm8996-common" revision="lineage-21" />
-  <project name="LineageOS/android_device_xiaomi_gemini" path="device/xiaomi/gemini" revision="lineage-21" />
-  <project name="LineageOS/android_device_xiaomi_natrium" path="device/xiaomi/natrium" revision="lineage-21" />
-  <project name="LineageOS/android_kernel_xiaomi_msm8996" path="kernel/xiaomi/msm8996" revision="lineage-21" />
+  <project name="LineageOS/android_device_xiaomi_msm8996-common" path="device/xiaomi/msm8996-common" />
+  <project name="LineageOS/android_device_xiaomi_gemini" path="device/xiaomi/gemini" />
+  <project name="LineageOS/android_device_xiaomi_natrium" path="device/xiaomi/natrium" />
+  <project name="LineageOS/android_kernel_xiaomi_msm8996" path="kernel/xiaomi/msm8996" />
 
   <project name="LineageOS/android_hardware_oneplus" path="hardware/oneplus" />
   <project name="LineageOS/android_hardware_oplus" path="hardware/oplus" />
