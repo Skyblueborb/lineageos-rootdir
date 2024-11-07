@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+
+    <project name="Skyblueborb/device_xiaomi_laurel_sprout"
+        path="device/xiaomi/laurel_sprout" />
+    <project name="Skyblueborb/vendor_xiaomi_laurel_sprout"
+        path="vendor/xiaomi/laurel_sprout" />
+    <project name="Mi-A3-laurel-sprout/kernel_xiaomi_XD"
+        path="kernel/xiaomi/laurel_sprout" revision="lineage-18.1" />
+
+    <project name="LineageOS/android_hardware_xiaomi" path="hardware/xiaomi" />
+    <project name="LineageOS/android_packages_apps_Twelve" path="packages/apps/Twelve" />
+
+</manifest>
