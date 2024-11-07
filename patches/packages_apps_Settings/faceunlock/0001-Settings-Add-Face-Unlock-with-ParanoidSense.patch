@@ -1,0 +1,28 @@
+From 0b06e8c16e1b517987d2ed5e8f651774f3f78912 Mon Sep 17 00:00:00 2001
+From: Chris Crump <chriscrawford893@gmail.com>
+Date: Thu, 3 Oct 2024 12:22:13 +0000
+Subject: [PATCH 1/3] Settings: Add Face Unlock with ParanoidSense
+
+Based on AOSPA's implementation and adapted by @ghostrider-reborn
+
+Signed-off-by: Pranav Vashi <neobuddy89@gmail.com>
+---
+ AndroidManifest.xml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/AndroidManifest.xml b/AndroidManifest.xml
+index 692e5661174..3b6e35a4b4a 100644
+--- a/AndroidManifest.xml
++++ b/AndroidManifest.xml
+@@ -2712,7 +2712,7 @@
+             android:screenOrientation="portrait"/>
+ 
+         <activity android:name=".biometrics.face.FaceEnrollFinish"
+-            android:exported="false"
++            android:exported="true"
+             android:theme="@style/GlifV4Theme.DayNight"
+             android:screenOrientation="portrait"/>
+ 
+-- 
+2.47.0
+

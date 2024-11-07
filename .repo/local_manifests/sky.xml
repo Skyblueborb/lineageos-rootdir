@@ -10,5 +10,7 @@
 
     <project name="LineageOS/android_hardware_xiaomi" path="hardware/xiaomi" />
     <project name="LineageOS/android_packages_apps_Twelve" path="packages/apps/Twelve" />
+    <project name="ProjectPixelage/android_packages_apps_ParanoidSense"
+        path="packages/apps/ParanoidSense" />
 
 </manifest>

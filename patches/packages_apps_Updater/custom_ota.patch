@@ -1,0 +1,24 @@
+From 98aac0df3398a22510ff852be854926cfed57645 Mon Sep 17 00:00:00 2001
+From: Skyblueborb <tomaszborbely0710@gmail.com>
+Date: Fri, 16 Feb 2024 16:06:12 +0100
+Subject: [PATCH] laurel_sprout: custom OTA link
+
+Change-Id: I7dd6e5d651b4e649f67f33239b3d987a908d81f8
+Signed-off-by: Skyblueborb <tomaszborbely0710@gmail.com>
+---
+ app/src/main/res/values/strings.xml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/app/src/main/res/values/strings.xml b/app/src/main/res/values/strings.xml
+index b59cea44..a2554e16 100644
+--- a/app/src/main/res/values/strings.xml
++++ b/app/src/main/res/values/strings.xml
+@@ -32,7 +32,7 @@
+           {type} - Build type
+           {incr} - Incremental version
+     -->
+-    <string name="updater_server_url" translatable="false">https://download.lineageos.org/api/v1/{device}/{type}/{incr}</string>
++    <string name="updater_server_url" translatable="false">https://thebiggestboi.skyblueborb.workers.dev/0:/lineage-22.0.json</string>
+
+     <string name="verification_failed_notification">Verification failed</string>
+     <string name="verifying_download_notification">Verifying update</string>

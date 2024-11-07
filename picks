@@ -2,6 +2,7 @@
 
 ANDROID_BUILD_TOP="$(dirname $(realpath "$0"))"
 [[ "${ANDROID_BUILD_TOP##*/}" == "lineageos-rootdir" ]] && ANDROID_BUILD_TOP="$(dirname "$ANDROID_BUILD_TOP")"
+PATCHES_DIR=$ANDROID_BUILD_TOP/lineageos-rootdir/patches
 CHECK="$(echo $1 | grep -q check && echo 1)"
 GERRIT_USERNAME="$(git config review.review.lineageos.org.username)"
 
@@ -90,5 +91,29 @@ repopick 407612 # Trebuchet: Eleven -> Twelve
 
 # vendor/lineage
 repopick 407581 # common: Eleven -> Twelve
+
+# Display HAL
+apply_patch_recursive "hardware/qcom-caf/sm8150/display" "$PATCHES_DIR/hardware_qcom-caf_sm8150_display"
+
+# Custom OTA
+apply_patch "packages/apps/Updater" "$PATCHES_DIR/packages_apps_Updater/custom_ota.patch"
+
+# frameworks/base
+## FaceUnlock
+apply_patch_recursive "frameworks/base" "$PATCHES_DIR/frameworks_base/faceunlock"
+## GPhotosSpoof
+apply_patch "frameworks/base" "$PATCHES_DIR/frameworks_base/0001-Import-debloated-PixelPropUtils.patch"
+## Three Finger Screenshot
+apply_patch "frameworks/base" "$PATCHES_DIR/frameworks_base/0001-base-Add-three-fingers-swipe-to-screenshot-1-2.patch"
+
+# packages/apps/Settings
+## FaceUnlock
+apply_patch_recursive "packages/apps/Settings" "$PATCHES_DIR/packages_apps_Settings/faceunlock"
+## Three Finger Screenshot
+apply_patch "packages/apps/Settings" "$PATCHES_DIR/packages_apps_Settings/0001-Settings-Add-three-fingers-swipe-to-screenshot-2-2.patch"
+
+# vendor/lineage
+## FaceUnlock
+apply_patch "vendor/lineage" "$PATCHES_DIR/vendor_lineage/0001-config-Switch-to-AOSPA-s-face-unlock-implementation.patch"
 
 wait
