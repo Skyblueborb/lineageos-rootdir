@@ -25,6 +25,48 @@ function rc() {
     echo `${ANDROID_BUILD_TOP}/gen_chain $@ | cut -b10-`
 }
 
+apply_patch() {
+    echo -e "${GREEN}Applying patch...${NOCOLOR}"
+    echo -e "${LIGHTBLUE}Target repo:${NOCOLOR} $1"
+    echo -e "${LIGHTBLUE}Patch file:${NOCOLOR} $2"
+
+    if [ -d "$ANDROID_BUILD_TOP/$1" ] && [ -f "$2" ]; then
+        cd "$1"
+        git am -3 --ignore-whitespace "$2"
+        cd "$ANDROID_BUILD_TOP" && echo ""
+    else
+        echo "Can't find dir $1 or patch file $2, skipping patch"
+    fi
+}
+
+
+apply_patch_recursive() {
+    echo -e "${GREEN}Applying patches recursively...${NOCOLOR}"
+    echo -e "${LIGHTBLUE}Target directory:${NOCOLOR} $1"
+    echo -e "${LIGHTBLUE}Patch directory:${NOCOLOR} $2"
+
+    # Check if the target and patch directories exist
+    if [ ! -d "$ANDROID_BUILD_TOP/$1" ]; then
+        echo "Target directory $1 not found, exiting."
+        return 1
+    fi
+
+    if [ ! -d "$2" ]; then
+        echo "Patch directory $2 not found, exiting."
+        return 1
+    fi
+
+    # Iterate over each .patch file in the patch directory
+    for patch_file in "$2"/*.patch; do
+        if [ -f "$patch_file" ]; then
+            # Call apply_patch for each .patch file
+            apply_patch "$1" "$patch_file"
+        else
+            echo "No .patch files found in $2, skipping."
+        fi
+    done
+}
+
 #
 # _examples_
 #
