@@ -91,6 +91,7 @@ repopick 407612 # Trebuchet: Eleven -> Twelve
 
 # vendor/lineage
 repopick 407581 # common: Eleven -> Twelve
+repopickchain 405129 # flag_values: Enable AVF Custom VM support
 
 # Display HAL
 apply_patch_recursive "hardware/qcom-caf/sm8150/display" "$PATCHES_DIR/hardware_qcom-caf_sm8150_display"
