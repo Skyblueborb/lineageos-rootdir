@@ -1,31 +1,31 @@
-From 8f197e1af780615b4ad9344ac8feed13a120cbe7 Mon Sep 17 00:00:00 2001
-From: Dyneteve <dyneteve@pixelexperience.org>
-Date: Tue, 22 Feb 2022 20:19:35 +0800
+From c860c3631c97160a0e71aadb5dd7d2a32839511c Mon Sep 17 00:00:00 2001
+From: Skyblueborb <tomaszborbely0710@gmail.com>
+Date: Sat, 21 Dec 2024 16:18:26 +0100
 Subject: [PATCH] gralloc: Fix RAW10/12 buffer alignment for trinket
 
-[Vishalcj17] Guard with TARGET_NEEDS_RAW10_BUFFER_FIX
-Signed-off-by: Vishalcj17 <vishalcj@aospa.co>
-Change-Id: Ic70b21180d7c8441bf794a08405fe4428a42d8ec
+Adapt to the new Android.bp changes
+
+Change-Id: Ie6db77db45827bbc0e946b665833f0c562a891a6
 Signed-off-by: Skyblueborb <tomaszborbely0710@gmail.com>
 ---
- gralloc/Android.mk   | 3 +++
+ gralloc/Android.bp   | 3 +++
  gralloc/gr_utils.cpp | 8 ++++++++
  2 files changed, 11 insertions(+)
 
-diff --git a/gralloc/Android.mk b/gralloc/Android.mk
-index 57fee80fe2..3302ac913b 100644
---- a/gralloc/Android.mk
-+++ b/gralloc/Android.mk
-@@ -52,6 +52,9 @@ endif
- ifeq ($(TARGET_USES_UNALIGNED_YCRCB),true)
-     LOCAL_CFLAGS              += -DUSE_UNALIGNED_YCRCB
- endif
-+ifeq ($(TARGET_NEEDS_RAW10_BUFFER_FIX),true)
-+LOCAL_CFLAGS                  += -DRAW10_BUFFER_FIX
-+endif
- 
- LOCAL_ADDITIONAL_DEPENDENCIES := $(common_deps)
- LOCAL_SRC_FILES               := gr_utils.cpp gr_adreno_info.cpp
+diff --git a/gralloc/Android.bp b/gralloc/Android.bp
+index d2b1eae51d..1f22ee6a07 100644
+--- a/gralloc/Android.bp
++++ b/gralloc/Android.bp
+@@ -33,6 +33,9 @@ cc_library_shared {
+     }) + select(soong_config_variable("qtidisplay", "target_uses_ycrcb_venus_camera_preview"), {
+         "true": ["-DUSE_YCRCB_CAMERA_PREVIEW_VENUS"],
+         default: [],
++    }) + select(soong_config_variable("qtidisplay", "target_needs_raw10_buffer_fix"), {
++        "true": ["-DRAW10_BUFFER_FIX"],
++        default: [],
+     }),
+     header_libs: [
+         "display_headers",
 diff --git a/gralloc/gr_utils.cpp b/gralloc/gr_utils.cpp
 index 4306663ee9..4697a89053 100644
 --- a/gralloc/gr_utils.cpp
