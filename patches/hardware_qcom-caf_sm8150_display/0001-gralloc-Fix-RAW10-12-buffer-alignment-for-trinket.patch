@@ -1,9 +1,13 @@
 From c860c3631c97160a0e71aadb5dd7d2a32839511c Mon Sep 17 00:00:00 2001
-From: Skyblueborb <tomaszborbely0710@gmail.com>
-Date: Sat, 21 Dec 2024 16:18:26 +0100
+From: Dyneteve <dyneteve@pixelexperience.org>
+Date: Tue, 22 Feb 2022 20:19:35 +0800
 Subject: [PATCH] gralloc: Fix RAW10/12 buffer alignment for trinket
 
-Adapt to the new Android.bp changes
+[Vishalcj17] Guard with TARGET_NEEDS_RAW10_BUFFER_FIX
+Signed-off-by: Vishalcj17 <vishalcj@aospa.co>
+Change-Id: Ic70b21180d7c8441bf794a08405fe4428a42d8ec
+
+[Skyblueborb] Adapt to the new Android.bp changes
 
 Change-Id: Ie6db77db45827bbc0e946b665833f0c562a891a6
 Signed-off-by: Skyblueborb <tomaszborbely0710@gmail.com>

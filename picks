@@ -87,8 +87,8 @@ apply_patch_recursive() {
 #
 
 # Display HAL
-apply_patch_recursive "hardware/qcom-caf/sm8150/display" "$PATCHES_DIR/hardware_qcom-caf_sm8150_display"
-apply_patch_recursive "hardware/qcom-caf/common" "$PATCHES_DIR/hardware_qcom-caf_common"
+apply_patch "hardware/qcom-caf/sm8150/display" "$PATCHES_DIR/hardware_qcom-caf_sm8150_display/0001-gralloc-Fix-RAW10-12-buffer-alignment-for-trinket.patch"
+apply_patch "hardware/qcom-caf/common" "$PATCHES_DIR/hardware_qcom-caf_common/0001-qcom-add-soong-config-for-RAW10-buffer-fix.patch"
 
 # Custom OTA
 apply_patch "packages/apps/Updater" "$PATCHES_DIR/packages_apps_Updater/custom_ota.patch"

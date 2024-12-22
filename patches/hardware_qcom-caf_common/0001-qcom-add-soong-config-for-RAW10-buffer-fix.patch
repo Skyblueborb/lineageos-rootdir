@@ -1,0 +1,37 @@
+From 612149b562db375b3d14ad2bc9499629be88cae5 Mon Sep 17 00:00:00 2001
+From: Skyblueborb <tomaszborbely0710@gmail.com>
+Date: Sat, 21 Dec 2024 16:31:45 +0100
+Subject: [PATCH] qcom: add soong config for RAW10 buffer fix
+
+Change-Id: Idea303d58860152541d1d2a2b98f46e716cc67a6
+Signed-off-by: Skyblueborb <tomaszborbely0710@gmail.com>
+---
+ BoardConfigQcom.mk | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/BoardConfigQcom.mk b/BoardConfigQcom.mk
+index fee5504..9e16e74 100644
+--- a/BoardConfigQcom.mk
++++ b/BoardConfigQcom.mk
+@@ -86,6 +86,7 @@ SOONG_CONFIG_qtidisplay_target_uses_unaligned_ycrcb ?= false
+ SOONG_CONFIG_qtidisplay_target_uses_ycrcb_camera_encode ?= false
+ SOONG_CONFIG_qtidisplay_target_uses_ycrcb_camera_preview ?= false
+ SOONG_CONFIG_qtidisplay_target_uses_ycrcb_venus_camera_preview ?= false
++SOONG_CONFIG_qtidisplay_target_needs_raw10_buffer_fix ?= false
+ 
+ # For libgrallocutils features
+ ifeq ($(TARGET_NO_RAW10_CUSTOM_FORMAT),true)
+@@ -110,6 +111,10 @@ else ifeq ($(TARGET_USES_YCRCB_VENUS_CAMERA_PREVIEW),true)
+     SOONG_CONFIG_qtidisplay_target_uses_ycrcb_venus_camera_preview := true
+ endif
+ 
++ifeq ($(TARGET_NEEDS_RAW10_BUFFER_FIX),true)
++    SOONG_CONFIG_qtidisplay_target_needs_raw10_buffer_fix := true
++endif
++
+ # Add rmnetctl to soong config namespaces
+ SOONG_CONFIG_NAMESPACES += rmnetctl
+ 
+-- 
+2.47.0
+
