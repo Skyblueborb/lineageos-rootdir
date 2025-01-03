@@ -1,7 +1,7 @@
-From 34f56b695eb0e59cdc52cee1c2763fc381ebe8b4 Mon Sep 17 00:00:00 2001
+From fcb8da45aa25962ba4242b295efda53686cdb2bb Mon Sep 17 00:00:00 2001
 From: minaripenguin <minaripenguin@users.noreply.github.com>
 Date: Sun, 17 Dec 2023 08:36:37 +0800
-Subject: [PATCH 8/8] SystemUI: Implement bouncer face unlock animation
+Subject: [PATCH 8/9] SystemUI: Implement bouncer face unlock animation
 
 mnri: move face indicator to top, rewrite code and fix inconsistencies
 
@@ -19,11 +19,11 @@ Signed-off-by: Dmitrii <bankersenator@gmail.com>
  .../SystemUI/res/drawable/face_success.xml    |   8 +-
  .../res/layout/keyguard_bottom_area.xml       |  27 ++-
  .../android/systemui/FaceScanningOverlay.kt   |   5 +
- .../ui/binder/KeyguardIndicationAreaBinder.kt |   1 +
+ .../ui/binder/KeyguardIndicationAreaBinder.kt |   2 +
  .../KeyguardIndicationController.java         |  32 ++-
  .../statusbar/phone/FaceUnlockImageView.kt    | 199 ++++++++++++++----
  .../phone/StatusBarKeyguardViewManager.java   |  65 +++++-
- 7 files changed, 275 insertions(+), 62 deletions(-)
+ 7 files changed, 276 insertions(+), 62 deletions(-)
 
 diff --git a/packages/SystemUI/res/drawable/face_success.xml b/packages/SystemUI/res/drawable/face_success.xml
 index d63dacb1512e..ad63e1b1f1b7 100644
@@ -121,23 +121,24 @@ index 3abcb139ab5c..5dbb14229c3d 100644
  
      override fun updateVisOnUpdateCutout(): Boolean {
 diff --git a/packages/SystemUI/src/com/android/systemui/keyguard/ui/binder/KeyguardIndicationAreaBinder.kt b/packages/SystemUI/src/com/android/systemui/keyguard/ui/binder/KeyguardIndicationAreaBinder.kt
-index 23c2491813f7..01146ea31ee2 100644
+index ba94f45528c7..97996950ba49 100644
 --- a/packages/SystemUI/src/com/android/systemui/keyguard/ui/binder/KeyguardIndicationAreaBinder.kt
 +++ b/packages/SystemUI/src/com/android/systemui/keyguard/ui/binder/KeyguardIndicationAreaBinder.kt
-@@ -54,6 +54,7 @@ object KeyguardIndicationAreaBinder {
-         indicationController: KeyguardIndicationController,
-     ): DisposableHandle {
-         indicationController.setIndicationArea(view)
+@@ -63,6 +63,8 @@ object KeyguardIndicationAreaBinder {
+         disposables += DisposableHandle {
+             previous?.let { indicationController.indicationArea = it }
+         }
++        indicationController.setIndicationArea(view)
 +        indicationController.setIndicationAreaTop(view)
  
          val indicationText: TextView = view.requireViewById(R.id.keyguard_indication_text)
          val indicationTextBottom: TextView =
 diff --git a/packages/SystemUI/src/com/android/systemui/statusbar/KeyguardIndicationController.java b/packages/SystemUI/src/com/android/systemui/statusbar/KeyguardIndicationController.java
-index 31dc97f39bdc..bee8f9866b56 100644
+index f02df85fe5f7..4b830945591a 100644
 --- a/packages/SystemUI/src/com/android/systemui/statusbar/KeyguardIndicationController.java
 +++ b/packages/SystemUI/src/com/android/systemui/statusbar/KeyguardIndicationController.java
-@@ -406,9 +406,15 @@ public class KeyguardIndicationController {
-         mStatusBarStateListener.onDozingChanged(mStatusBarStateController.isDozing());
+@@ -411,9 +411,15 @@ public class KeyguardIndicationController {
+         return mIndicationArea;
      }
  
 +    public void setIndicationAreaTop(ViewGroup indicationAreaTop) {
@@ -153,7 +154,7 @@ index 31dc97f39bdc..bee8f9866b56 100644
          mTopIndicationView = indicationArea.findViewById(R.id.keyguard_indication_text);
          mLockScreenIndicationView = indicationArea.findViewById(
                  R.id.keyguard_indication_text_bottom);
-@@ -992,11 +998,13 @@ public class KeyguardIndicationController {
+@@ -998,11 +1004,13 @@ public class KeyguardIndicationController {
              );
              return;
          }
@@ -170,7 +171,7 @@ index 31dc97f39bdc..bee8f9866b56 100644
          }
  
          if (mBiometricMessageSource != null && biometricSourceType == null) {
-@@ -1032,10 +1040,9 @@ public class KeyguardIndicationController {
+@@ -1038,10 +1046,9 @@ public class KeyguardIndicationController {
      }
  
      private void showFaceUnlockRecognizingMessage() {
@@ -184,7 +185,7 @@ index 31dc97f39bdc..bee8f9866b56 100644
      }
  
      private void hideFaceUnlockRecognizingMessage() {
-@@ -1044,9 +1051,10 @@ public class KeyguardIndicationController {
+@@ -1050,9 +1057,10 @@ public class KeyguardIndicationController {
          }
          String faceUnlockMessage = mContext.getResources().getString(
              R.string.face_unlock_recognizing);
@@ -196,7 +197,7 @@ index 31dc97f39bdc..bee8f9866b56 100644
          }
      }
  
-@@ -1739,6 +1747,12 @@ public class KeyguardIndicationController {
+@@ -1746,6 +1754,12 @@ public class KeyguardIndicationController {
          }
      };
  
@@ -465,7 +466,7 @@ index 5b6c7beff8dc..117f8713c1a0 100644
 +    }
  }
 diff --git a/packages/SystemUI/src/com/android/systemui/statusbar/phone/StatusBarKeyguardViewManager.java b/packages/SystemUI/src/com/android/systemui/statusbar/phone/StatusBarKeyguardViewManager.java
-index b40bf56ee66e..37661cca7d9c 100644
+index 6fde603af4c6..37f4ffee6930 100644
 --- a/packages/SystemUI/src/com/android/systemui/statusbar/phone/StatusBarKeyguardViewManager.java
 +++ b/packages/SystemUI/src/com/android/systemui/statusbar/phone/StatusBarKeyguardViewManager.java
 @@ -28,6 +28,7 @@ import android.content.Context;
@@ -476,15 +477,15 @@ index b40bf56ee66e..37661cca7d9c 100644
  import android.os.SystemClock;
  import android.os.Trace;
  import android.util.Log;
-@@ -82,6 +83,7 @@ import com.android.systemui.navigationbar.NavigationModeController;
- import com.android.systemui.navigationbar.TaskbarDelegate;
+@@ -84,6 +85,7 @@ import com.android.systemui.navigationbar.TaskbarDelegate;
+ import com.android.systemui.navigationbar.views.NavigationBarView;
  import com.android.systemui.plugins.ActivityStarter;
  import com.android.systemui.plugins.statusbar.StatusBarStateController;
 +import com.android.systemui.res.R;
  import com.android.systemui.scene.domain.interactor.SceneInteractor;
  import com.android.systemui.scene.shared.flag.SceneContainerFlag;
  import com.android.systemui.scene.shared.model.Scenes;
-@@ -99,6 +101,7 @@ import com.android.systemui.statusbar.SysuiStatusBarStateController;
+@@ -101,6 +103,7 @@ import com.android.systemui.statusbar.SysuiStatusBarStateController;
  import com.android.systemui.statusbar.domain.interactor.StatusBarKeyguardViewManagerInteractor;
  import com.android.systemui.statusbar.policy.ConfigurationController;
  import com.android.systemui.statusbar.policy.KeyguardStateController;
@@ -492,7 +493,7 @@ index b40bf56ee66e..37661cca7d9c 100644
  import com.android.systemui.unfold.FoldAodAnimationController;
  import com.android.systemui.unfold.SysUIUnfoldComponent;
  import com.android.systemui.user.domain.interactor.SelectedUserInteractor;
-@@ -185,6 +188,7 @@ public class StatusBarKeyguardViewManager implements RemoteInputController.Callb
+@@ -193,6 +196,7 @@ public class StatusBarKeyguardViewManager implements RemoteInputController.Callb
              public void onFullyShown() {
                  mPrimaryBouncerAnimating = false;
                  updateStates();
@@ -500,7 +501,7 @@ index b40bf56ee66e..37661cca7d9c 100644
              }
  
              @Override
-@@ -336,6 +340,8 @@ public class StatusBarKeyguardViewManager implements RemoteInputController.Callb
+@@ -342,6 +346,8 @@ public class StatusBarKeyguardViewManager implements RemoteInputController.Callb
      @Nullable private OccludingAppBiometricUI mOccludingAppBiometricUI;
  
      @Nullable private TaskbarDelegate mTaskbarDelegate;
@@ -509,7 +510,7 @@ index b40bf56ee66e..37661cca7d9c 100644
      private final KeyguardUpdateMonitorCallback mUpdateMonitorCallback =
              new KeyguardUpdateMonitorCallback() {
                  @Override
-@@ -356,6 +362,47 @@ public class StatusBarKeyguardViewManager implements RemoteInputController.Callb
+@@ -362,6 +368,47 @@ public class StatusBarKeyguardViewManager implements RemoteInputController.Callb
                  reset(true /* hideBouncerWhenShowing */);
              }
          }
@@ -555,27 +556,27 @@ index b40bf56ee66e..37661cca7d9c 100644
 +            }
 +        }
      };
-     private Lazy<WindowManagerLockscreenVisibilityInteractor> mWmLockscreenVisibilityInteractor;
-     private Lazy<KeyguardSurfaceBehindInteractor> mSurfaceBehindInteractor;
-@@ -395,7 +442,8 @@ public class StatusBarKeyguardViewManager implements RemoteInputController.Callb
-             Lazy<KeyguardSurfaceBehindInteractor> surfaceBehindInteractor,
-             JavaAdapter javaAdapter,
-             Lazy<SceneInteractor> sceneInteractorLazy,
--            StatusBarKeyguardViewManagerInteractor statusBarKeyguardViewManagerInteractor
-+            StatusBarKeyguardViewManagerInteractor statusBarKeyguardViewManagerInteractor,
+     private Lazy<KeyguardDismissActionInteractor> mKeyguardDismissActionInteractor;
+     private final JavaAdapter mJavaAdapter;
+@@ -401,7 +448,8 @@ public class StatusBarKeyguardViewManager implements RemoteInputController.Callb
+             StatusBarKeyguardViewManagerInteractor statusBarKeyguardViewManagerInteractor,
+             @Main DelayableExecutor executor,
+             Lazy<DeviceEntryInteractor> deviceEntryInteractorLazy,
+-            DismissCallbackRegistry dismissCallbackRegistry
++            DismissCallbackRegistry dismissCallbackRegistry,
 +            @Main Handler faceRecognizingHandler
      ) {
          mContext = context;
-         mViewMediatorCallback = callback;
-@@ -430,6 +478,7 @@ public class StatusBarKeyguardViewManager implements RemoteInputController.Callb
-         mJavaAdapter = javaAdapter;
-         mSceneInteractorLazy = sceneInteractorLazy;
+         mExecutor = executor;
+@@ -438,6 +486,7 @@ public class StatusBarKeyguardViewManager implements RemoteInputController.Callb
          mStatusBarKeyguardViewManagerInteractor = statusBarKeyguardViewManagerInteractor;
+         mDeviceEntryInteractorLazy = deviceEntryInteractorLazy;
+         mDismissCallbackRegistry = dismissCallbackRegistry;
 +        mFaceRecognizingHandler = faceRecognizingHandler;
      }
  
      KeyguardTransitionInteractor mKeyguardTransitionInteractor;
-@@ -1556,6 +1605,13 @@ public class StatusBarKeyguardViewManager implements RemoteInputController.Callb
+@@ -1634,6 +1683,13 @@ public class StatusBarKeyguardViewManager implements RemoteInputController.Callb
          }
      }
  
@@ -589,7 +590,7 @@ index b40bf56ee66e..37661cca7d9c 100644
      /** Display security message to relevant KeyguardMessageArea. */
      public void setKeyguardMessage(String message, ColorStateList colorState,
              BiometricSourceType biometricSourceType) {
-@@ -1567,6 +1623,13 @@ public class StatusBarKeyguardViewManager implements RemoteInputController.Callb
+@@ -1645,6 +1701,13 @@ public class StatusBarKeyguardViewManager implements RemoteInputController.Callb
          } else {
              mPrimaryBouncerInteractor.showMessage(message, colorState);
          }

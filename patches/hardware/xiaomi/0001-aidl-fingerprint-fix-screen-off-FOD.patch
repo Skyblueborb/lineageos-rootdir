@@ -1,0 +1,26 @@
+From fd0faa23086f22445f7420b660cf7002b5cde2f6 Mon Sep 17 00:00:00 2001
+From: Skyblueborb <tomaszborbely0710@gmail.com>
+Date: Tue, 26 Nov 2024 20:09:18 +0100
+Subject: [PATCH] aidl: fingerprint: fix screen off FOD
+
+don't eat vendor code 22 - it's used for screen off FOD on laurel
+
+Signed-off-by: Skyblueborb <tomaszborbely0710@gmail.com>
+---
+ aidl/fingerprint/Session.cpp | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/aidl/fingerprint/Session.cpp b/aidl/fingerprint/Session.cpp
+index 150af3de..a957d4e8 100644
+--- a/aidl/fingerprint/Session.cpp
++++ b/aidl/fingerprint/Session.cpp
+@@ -362,7 +362,8 @@ void Session::notify(const fingerprint_msg_t* msg) {
+             // don't process vendor messages further since frameworks try to disable
+             // udfps display mode on vendor acquired messages but our sensors send a
+             // vendor message during processing...
+-            if (result != AcquiredInfo::VENDOR) {
++            // process only vendor code 22 which is needed for screen off FOD on laurel_sprout
++            if (result != AcquiredInfo::VENDOR || (result == AcquiredInfo::VENDOR && vendorCode == 22)) {
+                 mCb->onAcquired(result, vendorCode);
+             }
+         } break;

@@ -1,4 +1,4 @@
-From 612149b562db375b3d14ad2bc9499629be88cae5 Mon Sep 17 00:00:00 2001
+From 1d4213aa29779fae81c537f138b928530d9cd960 Mon Sep 17 00:00:00 2001
 From: Skyblueborb <tomaszborbely0710@gmail.com>
 Date: Sat, 21 Dec 2024 16:31:45 +0100
 Subject: [PATCH] qcom: add soong config for RAW10 buffer fix
@@ -6,14 +6,24 @@ Subject: [PATCH] qcom: add soong config for RAW10 buffer fix
 Change-Id: Idea303d58860152541d1d2a2b98f46e716cc67a6
 Signed-off-by: Skyblueborb <tomaszborbely0710@gmail.com>
 ---
- BoardConfigQcom.mk | 5 +++++
- 1 file changed, 5 insertions(+)
+ BoardConfigQcom.mk | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
 diff --git a/BoardConfigQcom.mk b/BoardConfigQcom.mk
-index fee5504..9e16e74 100644
+index fee5504..bde39f4 100644
 --- a/BoardConfigQcom.mk
 +++ b/BoardConfigQcom.mk
-@@ -86,6 +86,7 @@ SOONG_CONFIG_qtidisplay_target_uses_unaligned_ycrcb ?= false
+@@ -67,7 +67,8 @@ SOONG_CONFIG_qtidisplay += \
+     target_uses_unaligned_ycrcb \
+     target_uses_ycrcb_camera_encode \
+     target_uses_ycrcb_camera_preview \
+-    target_uses_ycrcb_venus_camera_preview
++    target_uses_ycrcb_venus_camera_preview \
++    target_needs_raw10_buffer_fix
+ 
+ # Set default values for qtidisplay config
+ SOONG_CONFIG_qtidisplay_drmpp ?= false
+@@ -86,6 +87,7 @@ SOONG_CONFIG_qtidisplay_target_uses_unaligned_ycrcb ?= false
  SOONG_CONFIG_qtidisplay_target_uses_ycrcb_camera_encode ?= false
  SOONG_CONFIG_qtidisplay_target_uses_ycrcb_camera_preview ?= false
  SOONG_CONFIG_qtidisplay_target_uses_ycrcb_venus_camera_preview ?= false
@@ -21,7 +31,7 @@ index fee5504..9e16e74 100644
  
  # For libgrallocutils features
  ifeq ($(TARGET_NO_RAW10_CUSTOM_FORMAT),true)
-@@ -110,6 +111,10 @@ else ifeq ($(TARGET_USES_YCRCB_VENUS_CAMERA_PREVIEW),true)
+@@ -110,6 +112,10 @@ else ifeq ($(TARGET_USES_YCRCB_VENUS_CAMERA_PREVIEW),true)
      SOONG_CONFIG_qtidisplay_target_uses_ycrcb_venus_camera_preview := true
  endif
  

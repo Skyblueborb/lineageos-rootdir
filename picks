@@ -95,7 +95,7 @@ apply_patch "packages/apps/Updater" "$PATCHES_DIR/packages_apps_Updater/custom_o
 
 # frameworks/base
 ## FaceUnlock
-# apply_patch_recursive "frameworks/base" "$PATCHES_DIR/frameworks_base/faceunlock"
+apply_patch_recursive "frameworks/base" "$PATCHES_DIR/frameworks_base/faceunlock"
 ## GPhotosSpoof
 apply_patch "frameworks/base" "$PATCHES_DIR/frameworks_base/0001-Import-debloated-PixelPropUtils.patch"
 ## Three Finger Screenshot
@@ -103,10 +103,11 @@ apply_patch "frameworks/base" "$PATCHES_DIR/frameworks_base/0001-base-Add-three-
 ## Screen-Off FOD
 apply_patch_recursive "frameworks/base" "$PATCHES_DIR/frameworks_base/screenOffFod"
 repopick 410754 # udfps: Update touch overlay sensorRect on updating overlay params
+repopick 409848 # fixup! Implement edge long swipe gesture
 
 # packages/apps/Settings
 ## FaceUnlock
-# apply_patch_recursive "packages/apps/Settings" "$PATCHES_DIR/packages_apps_Settings/faceunlock"
+apply_patch_recursive "packages/apps/Settings" "$PATCHES_DIR/packages_apps_Settings/faceunlock"
 ## Three Finger Screenshot
 apply_patch "packages/apps/Settings" "$PATCHES_DIR/packages_apps_Settings/0001-Settings-Add-three-fingers-swipe-to-screenshot-2-2.patch"
 ## Screen-Off FOD
@@ -114,6 +115,6 @@ apply_patch "packages/apps/Settings" "$PATCHES_DIR/packages_apps_Settings/0001-S
 
 # vendor/lineage
 ## FaceUnlock
-# apply_patch "vendor/lineage" "$PATCHES_DIR/vendor_lineage/0001-config-Switch-to-AOSPA-s-face-unlock-implementation.patch"
+apply_patch "vendor/lineage" "$PATCHES_DIR/vendor_lineage/0001-config-Switch-to-AOSPA-s-face-unlock-implementation.patch"
 
 wait
